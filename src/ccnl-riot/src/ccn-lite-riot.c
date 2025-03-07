@@ -39,11 +39,14 @@
 #include "net/gnrc/netapi.h"
 #include "net/packet.h"
 #include "ccn-lite-riot.h"
+#include "ztimer.h"
 
 #include "ccnl-os-time.h"
 #include "ccnl-fwd.h"
 #include "ccnl-producer.h"
 #include "ccnl-pkt-builder.h"
+
+#define FAKE_LATENCY_MS (1000) // JON 
 
 /**
  * @brief RIOT specific local variables
@@ -348,6 +351,7 @@ ccnl_interest_retransmit(struct ccnl_relay_s *relay, struct ccnl_interest_s *ccn
     ccnl_interest_propagate(relay, ccnl_int);
 }
 
+
 /* the main event-loop */
 void
 *_ccnl_event_loop(void *arg)
@@ -440,7 +444,7 @@ void
                 DEBUGMSG(WARNING, "ccn-lite: unknown message type\n");
                 break;
         }
-
+    ztimer_sleep(ZTIMER_MSEC, FAKE_LATENCY_MS);
     }
     return NULL;
 }
