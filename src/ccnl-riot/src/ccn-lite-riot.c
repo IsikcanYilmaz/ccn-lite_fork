@@ -46,7 +46,7 @@
 #include "ccnl-producer.h"
 #include "ccnl-pkt-builder.h"
 
-#define FAKE_LATENCY_MS (1000) // JON 
+uint32_t FAKE_LATENCY_MS = 1000; // JON 
 
 /**
  * @brief RIOT specific local variables
@@ -372,6 +372,8 @@ void
         DEBUGMSG(VERBOSE, "ccn-lite: waiting for incoming message.\n");
         msg_receive(&m);
 
+        ztimer_sleep(ZTIMER_MSEC, FAKE_LATENCY_MS);
+
         switch (m.type) {
             case GNRC_NETAPI_MSG_TYPE_RCV:
                 DEBUGMSG(DEBUG, "ccn-lite: GNRC_NETAPI_MSG_TYPE_RCV received\n");
@@ -444,7 +446,6 @@ void
                 DEBUGMSG(WARNING, "ccn-lite: unknown message type\n");
                 break;
         }
-    ztimer_sleep(ZTIMER_MSEC, FAKE_LATENCY_MS);
     }
     return NULL;
 }
